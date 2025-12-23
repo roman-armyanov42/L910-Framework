@@ -1,0 +1,24 @@
+### Получить все концерты
+GET http://localhost:3000/concerts
+
+### Создать новый концерт
+POST http://localhost:3000/concerts
+Content-Type: application/json
+
+{
+  "artist": "Test",
+  "date": "1234-56-78",
+  "price": 4321
+}
+
+### Частичное изменение (замени ID на тот, что придет после POST)
+PATCH http://localhost:3000/concerts/1766476970686
+Content-Type: application/json
+
+{
+  "price": 4000
+}
+
+###
+
+DELETE http://localhost:3000/concerts/1
