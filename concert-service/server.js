@@ -1,107 +1,110 @@
-const http = require("http");
+const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
+const app = express();
 const PORT = 3000;
 
-// Чтение и запись
-const readDB = (file) =>
-  JSON.parse(fs.readFileSync(path.join(__dirname, "data", file), "utf-8"));
-const writeDB = (file, data) =>
-  fs.writeFileSync(
-    path.join(__dirname, "data", file),
-    JSON.stringify(data, null, 2)
-  );
+// Мидлвар для парсинга JSON
+app.use(express.json());
 
-// Аналог body-parser
-const getBody = (req) =>
-  new Promise((resolve) => {
-    let body = "";
-    req.on("data", (chunk) => (body += chunk.toString()));
-    req.on("end", () => resolve(JSON.parse(body || "{}")));
-  });
+// Вспомогательные функции для работы с БД
+const getFilePath = (resource) => path.join(__dirname, "data", `${resource}.json`);
 
-const server = http.createServer(async (req, res) => {
-  const parts = req.url.split("/").filter(Boolean);
-  const resource = parts[0]; // concerts или venues
-  const id = parseInt(parts[1]);
+const readDB = (resource) => {
+  const filePath = getFilePath(resource);
+  if (!fs.existsSync(filePath)) return [];
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+};
 
-  console.log("Запрос пришел на url:", req.url); // ДОБАВЬ ЭТО
-  console.log("Определенный ресурс:", resource); // И ЭТО
+const writeDB = (resource, data) => {
+  fs.writeFileSync(getFilePath(resource), JSON.stringify(data, null, 2));
+};
 
-  res.setHeader("Content-Type", "application/json");
+// --- Маршруты ---
 
-  try {
-    if (resource !== "concerts" && resource !== "venues") {
-      res.statusCode = 404;
-      return res.end(JSON.stringify({ error: "Маршрут не найден" }));
-    }
+// Валидация ресурса (concerts или venues)
+app.param('resource', (req, res, next, resource) => {
+  if (resource !== "concerts" && resource !== "venues") {
+    return res.status(404).json({ error: "Маршрут не найден" });
+  }
+  next();
+});
 
-    const fileName = `${resource}.json`;
-    let data = readDB(fileName);
+// GET ALL
+app.get("/:resource", (req, res) => {
+  const data = readDB(req.params.resource);
+  res.json(data);
+});
 
-    // GET ALL
-    if (req.method === "GET" && !id) {
-      res.end(JSON.stringify(data));
-    }
-    // GET BY ID
-    else if (req.method === "GET" && id) {
-      const item = data.find((i) => i.id === id);
-      item
-        ? res.end(JSON.stringify(item))
-        : ((res.statusCode = 404),
-          res.end(JSON.stringify({ error: "Не найдено" })));
-    }
-    // POST (Создание)
-    else if (req.method === "POST") {
-      const body = await getBody(req);
-      const newItem = { id: Date.now(), ...body };
-      data.push(newItem);
-      writeDB(fileName, data);
-      res.statusCode = 201;
-      res.end(JSON.stringify(newItem));
-    }
-    // PUT (Полное обновление)
-    else if (req.method === "PUT" && id) {
-      const body = await getBody(req);
-      const index = data.findIndex((i) => i.id === id);
-      if (index !== -1) {
-        data[index] = { id, ...body };
-        writeDB(fileName, data);
-        res.end(JSON.stringify(data[index]));
-      } else {
-        res.statusCode = 404;
-        res.end(JSON.stringify({ error: "Не найдено" }));
-      }
-    }
-    // PATCH (Частичное обновление + неидемпотентность)
-    else if (req.method === "PATCH" && id) {
-      const body = await getBody(req);
-      const index = data.findIndex((i) => i.id === id);
-      if (index !== -1) {
-        // Добавляем счетчик правок (неидемпотентность)
-        const editCount = (data[index]._edits || 0) + 1;
-        data[index] = { ...data[index], ...body, _edits: editCount };
-        writeDB(fileName, data);
-        res.end(JSON.stringify(data[index]));
-      } else {
-        res.statusCode = 404;
-        res.end(JSON.stringify({ error: "Не найдено" }));
-      }
-    }
-    // DELETE
-    else if (req.method === "DELETE" && id) {
-      const filtered = data.filter((i) => i.id !== id);
-      writeDB(fileName, filtered);
-      res.statusCode = 204;
-      res.end();
-    }
-  } catch (e) {
-    res.statusCode = 500;
-    res.end(JSON.stringify({ error: "Ошибка на сервере" }));
+// GET BY ID
+app.get("/:resource/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const data = readDB(req.params.resource);
+  const item = data.find((i) => i.id === id);
+
+  item ? res.json(item) : res.status(404).json({ error: "Не найдено" });
+});
+
+// POST (Создание)
+app.post("/:resource", (req, res) => {
+  const data = readDB(req.params.resource);
+  const newItem = { id: Date.now(), ...req.body };
+  
+  data.push(newItem);
+  writeDB(req.params.resource, data);
+  
+  res.status(201).json(newItem);
+});
+
+// PUT (Полное обновление)
+app.put("/:resource/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const data = readDB(req.params.resource);
+  const index = data.findIndex((i) => i.id === id);
+
+  if (index !== -1) {
+    data[index] = { id, ...req.body };
+    writeDB(req.params.resource, data);
+    res.json(data[index]);
+  } else {
+    res.status(404).json({ error: "Не найдено" });
   }
 });
 
-server.listen(PORT, () =>
-  console.log(`Сервер расписания запущен: http://localhost:${PORT}`)
+// PATCH (Частичное обновление + счетчик правок)
+app.patch("/:resource/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const data = readDB(req.params.resource);
+  const index = data.findIndex((i) => i.id === id);
+
+  if (index !== -1) {
+    const editCount = (data[index]._edits || 0) + 1;
+    data[index] = { ...data[index], ...req.body, id, _edits: editCount };
+    
+    writeDB(req.params.resource, data);
+    res.json(data[index]);
+  } else {
+    res.status(404).json({ error: "Не найдено" });
+  }
+});
+
+// DELETE
+app.delete("/:resource/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const data = readDB(req.params.resource);
+  const filtered = data.filter((i) => i.id !== id);
+  
+  writeDB(req.params.resource, filtered);
+  res.status(204).send();
+});
+
+// Обработка ошибок
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Ошибка на сервере" });
+});
+
+app.listen(PORT, () =>
+  console.log(`Сервер на Express запущен: http://localhost:${PORT}`)
 );

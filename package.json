@@ -4,5 +4,7 @@
   "scripts": {
     "start": "node concert-service/server.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
