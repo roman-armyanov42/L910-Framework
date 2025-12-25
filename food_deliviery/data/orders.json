@@ -1,0 +1,16 @@
+{
+  "orders": [
+    {
+      "id": 1766668758548,
+      "restaurantId": 2,
+      "customerName": "Мария Сидорова",
+      "totalAmount": 18.5,
+      "isDelivered": true,
+      "items": [
+        "Cheeseburger",
+        "Fries"
+      ],
+      "createdAt": "2025-12-25T13:19:18.548Z"
+    }
+  ]
+}

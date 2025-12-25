@@ -1,0 +1,75 @@
+{
+  "spots": [
+    {
+      "id": 1,
+      "name": "dodo pizza",
+      "rating": 4.7,
+      "isActive": true,
+      "openingDate": "2020-05-15",
+      "deliveryZones": [
+        "Downtown",
+        "Midtown",
+        "Uptown"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Burgers & More",
+      "rating": 4.3,
+      "isActive": true,
+      "openingDate": "2019-11-22",
+      "deliveryZones": [
+        "Midtown",
+        "East Side"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Bakery Street",
+      "location": "Uptown",
+      "rating": 5.5,
+      "isActive": true,
+      "deliveryZones": [
+        "Midtown",
+        "Uptown"
+      ],
+      "openingDate": "2021-07-21"
+    },
+    {
+      "id": 4,
+      "name": "Donut Shop",
+      "location": "West End",
+      "rating": 4.9,
+      "isActive": true,
+      "deliveryZones": [
+        "East Side",
+        "West End"
+      ],
+      "openingDate": "2024-09-27"
+    },
+    {
+      "id": 5,
+      "name": "Pizza Palace",
+      "location": "Central Square",
+      "rating": 4.6,
+      "isActive": true,
+      "deliveryZones": [
+        "Downtown",
+        "Midtown"
+      ],
+      "openingDate": "2019-08-29"
+    },
+    {
+      "id": 6,
+      "name": "Pizza Palace",
+      "location": "Market District",
+      "rating": 5.4,
+      "isActive": true,
+      "deliveryZones": [
+        "Midtown",
+        "Uptown"
+      ],
+      "openingDate": "2023-12-24"
+    }
+  ]
+}
