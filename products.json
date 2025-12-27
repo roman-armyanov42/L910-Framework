@@ -1,0 +1,41 @@
+[
+  {
+    "product_id": "PROD-0001",
+    "name": "Увлажняющий крем",
+    "brand": "AquaGlow",
+    "price": 1250.5,
+    "rating": 4.8,
+    "is_in_stock": true,
+    "added_to_catalog_date": "2023-11-15T10:30:00Z",
+    "expiration_date": "2025-11-15T00:00:00Z",
+    "ingredients": [
+      "вода",
+      "гиалуронат натрия",
+      "глицерин",
+      "пантенол"
+    ]
+  },
+  {
+    "product_id": "PROD-0002",
+    "name": "Матовая помада",
+    "brand": "ColorLux",
+    "price": 890,
+    "rating": 4.5,
+    "is_in_stock": true,
+    "added_to_catalog_date": "2024-02-20T14:15:00Z",
+    "expiration_date": "2026-08-01T00:00:00Z",
+    "ingredients": [
+      "касторовое масло",
+      "пчелиный воск",
+      "пигменты"
+    ]
+  },
+  {
+    "product_id": "PROD-9898",
+    "name": "Ночная сыворотка",
+    "brand": "BeautyBio",
+    "price": 2500,
+    "is_in_stock": true,
+    "added_to_catalog_date": "2025-12-27T13:34:22.030Z"
+  }
+]
