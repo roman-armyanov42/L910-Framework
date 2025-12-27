@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const Order = require('../models/order');
 const Spot = require('../models/spot');
+const Customer = require('../models/modelCustomers');
+const Products = require('../models/modelProducts');
 
 const BASE_DATA_PATH = path.join(__dirname, '../data');
 
@@ -89,6 +91,8 @@ function createResourceRoutes(app, resourceName, Model) {
 module.exports = (app) => {
     createResourceRoutes(app, 'orders', Order);
     createResourceRoutes(app, 'spots', Spot);
+    createResourceRoutes(app, 'customers', Customer);
+    createResourceRoutes(app, 'products', Products);
 
     app.get('/', (req, res) => {
         res.json({

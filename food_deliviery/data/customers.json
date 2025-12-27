@@ -1,0 +1,42 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "full_name": "Иван Дурак",
+      "email": "ivan.sm@email.ru",
+      "total_spent": 2100,
+      "loyalty_points": 50,
+      "newsletter_subscribed": false,
+      "registration_date": "2024-01-10T11:20:00Z",
+      "recent_order_ids": [
+        1,
+        1
+      ],
+      "updatedAt": "2025-12-27T15:09:15.323Z"
+    },
+    {
+      "id": 3,
+      "total_spent": 0,
+      "loyalty_points": 0,
+      "newsletter_subscribed": false,
+      "registration_date": "2025-12-27T14:54:06.169Z",
+      "recent_order_ids": []
+    },
+    {
+      "id": 4,
+      "total_spent": 0,
+      "loyalty_points": 0,
+      "newsletter_subscribed": false,
+      "registration_date": "2025-12-27T14:56:16.757Z",
+      "recent_order_ids": []
+    },
+    {
+      "id": 5,
+      "total_spent": 0,
+      "loyalty_points": 0,
+      "newsletter_subscribed": true,
+      "registration_date": "2025-12-27T15:21:09.875Z",
+      "recent_order_ids": []
+    }
+  ]
+}

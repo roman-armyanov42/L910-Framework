@@ -1,6 +1,7 @@
-[
-  {
-    "product_id": "PROD-0001",
+{
+  "products": [
+    {
+    "id": 1,
     "name": "Увлажняющий крем",
     "brand": "AquaGlow",
     "price": 1250.5,
@@ -16,7 +17,7 @@
     ]
   },
   {
-    "product_id": "PROD-0002",
+    "id": 2,
     "name": "Матовая помада",
     "brand": "ColorLux",
     "price": 890,
@@ -31,7 +32,7 @@
     ]
   },
   {
-    "product_id": "PROD-9898",
+    "id": 3,
     "name": "Ночная сыворотка",
     "brand": "BeautyBio",
     "price": 2500,
@@ -39,3 +40,4 @@
     "added_to_catalog_date": "2025-12-27T13:34:22.030Z"
   }
 ]
+}
