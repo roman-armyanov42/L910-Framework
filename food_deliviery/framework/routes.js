@@ -4,6 +4,8 @@ const Order = require('../models/order');
 const Spot = require('../models/spot');
 const Customer = require('../models/modelCustomers');
 const Products = require('../models/modelProducts');
+const Concert = require('../models/modelConcert');
+const Venue = require('../models/modelVenue');
 
 const BASE_DATA_PATH = path.join(__dirname, '../data');
 
@@ -93,6 +95,8 @@ module.exports = (app) => {
     createResourceRoutes(app, 'spots', Spot);
     createResourceRoutes(app, 'customers', Customer);
     createResourceRoutes(app, 'products', Products);
+    createResourceRoutes(app, 'concerts', Concert);
+    createResourceRoutes(app, 'venues', Venue);
 
     app.get('/', (req, res) => {
         res.json({
